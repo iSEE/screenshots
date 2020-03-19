@@ -5,6 +5,7 @@ LABEL authors="infinite.monkeys.with.keyboards@gmail.com" \
     description="Docker image for screenshot generation."
 
 RUN Rscript -e "BiocManager::install('iSEE', version='devel', dependencies=TRUE)"
+RUN Rscript -e "BiocManager::install('scater', version='devel', dependencies=TRUE)"
 
 RUN Rscript -e "BiocManager::install('webshot')"
 RUN mkdir ~/bin
