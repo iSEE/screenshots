@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Compile screenshots
     steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - uses: iSEE/screenshots@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    

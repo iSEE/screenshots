@@ -1,22 +1,24 @@
 #!/bin/bash
 
-git clone https://github.com/iSEE/screenshots
-git config --global user.email "infinite.monkeys.with.keyboards@gmail.com"
-git config --global user.name "LTLA"
+set -e
+set -u
 
-cd screenshots
-git checkout compiled
+git fetch --all
+git checkout compiled 2>/dev/null || git checkout -b compiled 
 git merge master
 
-git rm -rf images
+# Stripping out existing images, for a clean slate.
+if [ -e images ]
+then 
+    git rm -rf images
+fi
 
 # Compiling the images.
-#CMD="Rdevel --slave --no-save"
 CMD=Rscript
 $CMD -e "source('compile.R')"
 
 # Committing everything in sight.
 git add images
-git commit -m "Recompiled PNGs."
+git commit -m "Automated recompilation of screenshots."
 
-git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git compiled
