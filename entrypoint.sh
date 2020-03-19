@@ -3,6 +3,9 @@
 set -e
 set -u
 
+git config --local user.email infinite.monkeys.with.keyboards@gmail.com
+git config --local user.name LTLA
+
 git fetch --all
 git checkout compiled 2>/dev/null || git checkout -b compiled 
 git merge master
