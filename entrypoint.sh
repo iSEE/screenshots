@@ -27,4 +27,4 @@ $CMD -e "source('compile.R')"
 git add *
 git commit -m "Recompiled PNGs."
 
-git push https://${1}@github.com/iSEE/screenshots
+git push https://${1}:x-oauth-basic@github.com/iSEE/screenshots
