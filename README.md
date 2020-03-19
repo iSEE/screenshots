@@ -1,39 +1,42 @@
 # iSEE screenshots
 
-## Overview
-
 This repository contains code to automatically generate screenshots of **iSEE** instances,
 using the `appshot()` function from the **webshot** package to generate screenshots in an automated manner.
-This provides a location from which other packages can access these screenshots (e.g., during vignette compilation).
+This provides a location from which other repositories can access these screenshots (e.g., during vignette compilation).
 
-## Organization
+To trigger screenshot construction, a "source" repository should contain Rmarkdown files that create **iSEE** instances.
 
-We organize the repository into these subdirectories:
+- Each Rmarkdown file should create Shiny app objects in an `app` variable.
+This chunk should be followed by a code chunk that calls the `SCREENSHOT()` function,
+supplied with the desired name of the image and (optionally) the delay between loading the app and taking the screenshot.
 
-- `data/`, a directory of R scripts to generate a `SummarizedExperiment` object.
-- `apps/`, a directory of R scripts to create an **iSEE** instance.
-- `images/`, a directory of screenshots for each **iSEE** instance.
+  ````
+  ```{r}
+  # Something happens to create 'app'.
+  app <- iSEE()
+  ```
+  
+  ```{r}
+  SCREENSHOT(app, delay=20)
+  ```
+  ````
 
-Note that `images/` is only populated with PNGs in the `compiled` branch of this repository.
-This allows us to delete and regenerate images at any point without swamping the `master` with large binaries.
+- Each Rmarkdown file should have a silent code chunk at the top that defines the `SCREENSHOT` function if it doesn't exist.
+This will be used to insert the screenshots during Rmarkdown compilation in the source repository;
+it will be ignored when the screenshots are being compiled in the **screenshots** repository.
 
-## Instructions 
+  ````
+  ```{r, eval=!exists("SCREENSHOT"), include=FALSE}
+  SCREENSHOT <- function(x, ...) {
+      # Replace <SRC> with the name of the source repository.
+      knitr::include_graphics(file.path("https://raw.githubusercontent.com/iSEE/screenshots/compiled/images/<SRC>", x))
+  }
+  ```
+  ````
 
-To avoid constructing the same `SummarizedExperiment` multiple times for different **iSEE** instances,
-we centralize data processing into a common `data/` directory.
-Here, each script is expected to generate an RDS file containing a `SummarizedExperiment` object.
-The RDS file should contain the same prefix as the script, e.g., `allen.R` should generate `allen.rds`.
+Then it is a simple matter of modifying `sources.csv` to include the source repository and the path to the Rmarkdown file(s).
+Currently, only repositories in the `iSEE` organization are supported as sources.
 
-Each script in `data/` should load an SE object from an RDS file and generate a Shiny app object named `app`.
-We suggest using **rprojroot** to access the RDS file, to ensure that the file can be run from anywhere inside the repository.
-The script may also generate `delay`, a numeric scalar specifying the number of seconds to wait before taking the screenshot.
-Longer delays may be necessary to ensure that more complex plots are properly built.
-
-The `images/compile.R` file will execute each script in `apps/` and take the screenshot with the specified delay.
-A PNG file is produced with the same prefix as its originating source file.
-Note that it is necessary to run `webshot::install_phantomjs()` before running this script.
-You should also change the branch to `compiled` before generating and committing new images.
-
-## Contribute
-
-Contributors should add files to `data/` and `apps/` as necessary; we will take care of recompiling them.
+A push to the **screenshots** repository will trigger recompilation of the screenshots via GitHub Actions,
+populating `images/` with PNGs in the `compiled` branch.
+This set up allows us to delete and regenerate images at any point without swamping the `master` with large binaries.
