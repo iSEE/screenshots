@@ -8,23 +8,15 @@ cd screenshots
 git checkout compiled
 git merge master
 
-# Compiling the data files.
-#CMD="Rdevel --no-save --slave"
-CMD=Rscript
-
-cd data
-for x in $(ls *.R)
-do
-    $CMD -e "source('$x')"
-done
-cd -
+git rm -rf images
 
 # Compiling the images.
-cd images
+#CMD="Rdevel --slave --no-save"
+CMD=Rscript
 $CMD -e "source('compile.R')"
 
 # Committing everything in sight.
-git add *
+git add images
 git commit -m "Recompiled PNGs."
 
-git push https://${1}:x-oauth-basic@github.com/iSEE/screenshots
+git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
