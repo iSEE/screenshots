@@ -16,4 +16,9 @@ rdArgs <- ReducedDimensionPlot(
     )
 )
 
+cdArgs <- ColumnDataPlot(SelectionBoxOpen=TRUE,
+    ColumnSelectionSource="ReducedDimensionPlot1",
+    SelectionEffect="Color", SelectionColor="purple",
+    ColorByDefaultColor="#BDB3B3", PanelWidth=6L)
+
 app <- iSEE(sce, initial=list(cdArgs, rdArgs))
