@@ -1,10 +1,10 @@
-FROM iseedevelopers/isee
+FROM iseedevelopers/isee:latest
 
 MAINTAINER infinite.monkeys.with.keyboards@gmail.com 
 LABEL authors="infinite.monkeys.with.keyboards@gmail.com" \
     description="Docker image for screenshot generation."
 
-RUN Rscript -e "BiocManager::install('scater', version='devel', dependencies=TRUE)"
+RUN Rscript -e "BiocManager::install(c('scater', 'Rtsne'))"
 
 RUN Rscript -e "BiocManager::install('webshot')"
 RUN mkdir ~/bin
