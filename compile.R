@@ -2,7 +2,7 @@
 # along the way whenever it sees a SCREENSHOT command.
 
 library(callr)
-all.assets <- read.csv("sources.csv", header=FALSE)
+all.assets <- read.csv("sources.csv", header=FALSE, stringsAsFactors=FALSE)
 
 for (i in seq_len(nrow(all.assets))) {
     r(fun=function(repo, fname) {
