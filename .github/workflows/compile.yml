@@ -1,0 +1,14 @@
+name: Compile screenshots
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  compilation:
+    runs-on: ubuntu-latest
+    name: Compile screenshots
+    steps:
+    - uses: iSEE/screenshots@master
+      with:
+        args: ${{ secrets.GITHUB_TOKEN }}
