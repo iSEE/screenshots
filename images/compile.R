@@ -13,5 +13,5 @@ for (x in all.files) {
 
     fname <- sub(".R$", ".png", x)
     dir.create(dirname(fname), showWarning=FALSE, recursive=TRUE)
-    appshot(curenv$app, delay=delay, file=fname, cliprect="viewport")
+    appshot(curenv$app, delay=delay, file=fname)
 }
