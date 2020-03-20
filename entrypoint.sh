@@ -28,7 +28,7 @@ do
     git add $x
 done
 
-if [[ ! -z "$(git diff --cached)" ]]; then
+if [[ ! -z "$(git diff --cached)" ]]
 then
     git commit -m "Automated recompilation of screenshots."
 fi
