@@ -28,6 +28,9 @@ do
     git add $x
 done
 
-git commit -m "Automated recompilation of screenshots."
+if [[ ! -z "$(git diff --cached)" ]]; then
+then
+    git commit -m "Automated recompilation of screenshots."
+fi
 
 git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git compiled
