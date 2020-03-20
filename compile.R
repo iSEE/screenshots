@@ -14,6 +14,13 @@ if (normalizePath(Sys.getenv("HOME"))!="/root") {
 
 for (i in seq_len(nrow(all.assets))) {
     r(fun=function(repo, fname) {
+        if (grepl("@", repo)) {
+            branch <- sub(".*@", "", repo)
+            repo <- sub("@.*", "", repo)
+        } else {
+            branch <- "master"
+        }
+
         final.dir <- file.path("images", repo)
         dir.create(final.dir, showWarning=FALSE, recursive=TRUE)
 
@@ -21,7 +28,7 @@ for (i in seq_len(nrow(all.assets))) {
             webshot::appshot(app, delay=delay, file=x) # bound to global 'app'.
         }
 
-        src <- sprintf("https://raw.githubusercontent.com/iSEE/%s/screenshots/%s", repo, fname)
+        src <- file.path("https://raw.githubusercontent.com/iSEE", repo, branch, fname)
         fname2 <- file.path(final.dir, basename(fname))
         download.file(src, fname2)
         rmarkdown::render(fname2, clean=FALSE, run_pandoc=FALSE) # avoid need for the bib file.
