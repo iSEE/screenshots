@@ -1,5 +1,0 @@
-name: 'Compile screenshots'
-description: 'Compile iSEE screenshots to PNG, commit and push them.'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'
