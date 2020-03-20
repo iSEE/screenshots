@@ -13,3 +13,5 @@ jobs:
       with:
         fetch-depth: 0
     - uses: iSEE/screenshots@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
