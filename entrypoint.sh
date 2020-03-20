@@ -21,7 +21,7 @@ CMD=Rscript
 $CMD -e "source('compile.R')"
 
 # Committing everything in sight.
-git add images
+find images/ -name '*.png' | xargs git add
 git commit -m "Automated recompilation of screenshots."
 
 git push https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git compiled
