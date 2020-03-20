@@ -10,7 +10,7 @@ all.assets <- list.files(src.dir, full.names=TRUE)
 # changes between a local instance and when it is executed by GitHub Actions.
 # I can't just modify the PATH, either, as webshot starts a new process to 
 # take the screenshot, and this doesn't inherit the environment variables.
-if (normalizePath(Sys.getenv("HOME"))!="/root") {
+if (Sys.which("phantomjs")=="" && normalizePath(Sys.getenv("HOME"))!="/root") {
     file.symlink("/root/bin", "~/bin")
 }
 
@@ -24,6 +24,6 @@ for (fn in all.assets) {
         SCREENSHOT <- function(x, delay=10) {
             webshot::appshot(app, delay=delay, file=file.path(dir, x)) # bound to global 'app'.
         }
-        rmarkdown::render(fname, clean=FALSE, run_pandoc=FALSE) # avoid need for the bib file.
+        rmarkdown::render(fname, run_pandoc=FALSE) # avoid need for the bib file.
     }, args=list(fname=fn, dir=out.dir), show=TRUE)
 }
