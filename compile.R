@@ -17,5 +17,5 @@ for (i in seq_len(nrow(all.assets))) {
         fname2 <- file.path(final.dir, basename(fname))
         download.file(src, fname2)
         rmarkdown::render(fname2, run_pandoc=FALSE) # avoid need for the bib file.
-    }, args=list(repo=all.assets[i,1], fname=all.assets[i,2]))
+    }, args=list(repo=all.assets[i,1], fname=all.assets[i,2]), show=TRUE)
 }    
