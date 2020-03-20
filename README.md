@@ -4,9 +4,8 @@
 
 This repository specifies a Docker image to automatically generate screenshots of **iSEE** instances,
 using the `appshot()` function from the **webshot** package. 
-This allows other repositories to set up GitHub Actions using [the published image on DockerHub](https://hub.docker.com/repository/docker/iseedevelopers/screenshots);
-the idea is to recreate screenshots on the fly and then store them as static PNGs in those repositories, 
-for referencing during vignette compilation.
+This allows other repositories to use [the published image on DockerHub](https://hub.docker.com/repository/docker/iseedevelopers/screenshots) to recreate screenshots on the fly.
+Screenshots can then be stored as static PNGs in those repositories, e.g., for referencing during vignette compilation.
 We prefer static PNGs over attempting regeneration during vignette compilation 
 as the screenshot generation is rather fragile (system dependency on `PhantomJS`, intermittent time-out problems). 
 
@@ -41,14 +40,21 @@ it will be ignored when the screenshots are being compiled in the **screenshots*
   ```
   ````
 
-## Setting up GitHub Actions
+## Compiling screenshots
 
-See `.github/workflows/compile.yml` in https://github.com/iSEE/iSEE for an example.
-The idea is to checkout the source repository, run through `vignettes/` to generate screenshots,
-and then upload the screenshots as a workflow artifact.
-Developers can then download the artifact and manually commit the desired images into the repository for use in vignettes.
+Navigate to the directory containing the desired source repository on your local machine and run:
 
-At some point, we may have an automated commit,
-though this depends on the screenshots _not_ changing too frequently,
-otherwise the source repository will have bloated blobs.
+```sh
+git rm -rf --ignore-unmatch vignettes/screenshots
+docker run --rm -v "$(pwd)":"/workspace" --workdir=/workspace iseedevelopers/screenshots
+git add vignettes/screenshots
+git commit -m "Recompiled screenshots."
+```
 
+This will (re)create and commit a `screenshots` directory containing all screenshots generated from the vignettes.
+
+Alternatively, if you already have `PhantomJS` set up, you can replace the `docker` call with just running `compile.R`.
+This may be preferable if the screenshots require **iSEE** functionality not yet available in the DockerHub image.
+
+It is also possible to do this automatically via GitHub Actions,
+though we eventually decided it was less intrusive to manage commits manually.
