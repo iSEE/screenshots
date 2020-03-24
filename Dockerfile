@@ -5,17 +5,8 @@ LABEL authors="infinite.monkeys.with.keyboards@gmail.com" \
     description="Docker image for screenshot generation."
 
 # Requirements for 'compile.R'.
-RUN Rscript -e "BiocManager::install(c('rmarkdown', 'callr', 'webshot'))"
-
-# Extra requirements for taking the screenshot.
-RUN mkdir ~/bin
-RUN apt-get update
-RUN apt-get install lbzip2
-RUN Rscript -e "webshot:::install_phantomjs()"
-
-# Required for PhantomJS to work correctly, 
-# after much trial and error.
-ENV OPENSSL_CONF=/etc/ssl/
+RUN Rscript -e "BiocManager::install(c('rmarkdown', 'devtools'))"
+RUN Rscript -e "devtools::install_github('rstudio/webshot2')"
 
 # Defining the entrypoint for Git management and compilation. Note that though
 # 'compile.R' lives in '/', the current working directory is assumed to be in
