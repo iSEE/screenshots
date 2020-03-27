@@ -4,10 +4,8 @@ MAINTAINER infinite.monkeys.with.keyboards@gmail.com
 LABEL authors="infinite.monkeys.with.keyboards@gmail.com" \
     description="Docker image for screenshot generation."
 
-# Requirements for 'compile.R' (not sure why webshot2 depends
-# on webshot, but apparently it does, so there you go).
+# Requirements for 'compile.R'.
 RUN Rscript -e "BiocManager::install(c('rmarkdown', 'devtools'))"
-RUN Rscript -e "BiocManager::install('webshot')"
 RUN Rscript -e "devtools::install_github('rstudio/webshot2')"
 
 # Defining the entrypoint for Git management and compilation. Note that though
