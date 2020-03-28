@@ -6,16 +6,12 @@ library(callr)
 src.dir <- "vignettes"
 all.assets <- list.files(src.dir, full.names=TRUE)
 
-out.dir <- "screenshots"
-final.dir <- file.path(src.dir, out.dir)
-unlink(final.dir, recursive=TRUE)
-dir.create(final.dir)
-
 for (fn in all.assets) {
-    r(fun=function(fname, dir) {
+    r(fun=function(fname) {
         SCREENSHOT <- function(x, delay=10) {
-            webshot2::appshot(app, delay=delay, file=file.path(dir, x)) # bound to global 'app'.
+            dir.create(dirname(x), recursive=TRUE, showWarning=FALSE)
+            webshot2::appshot(app, delay=delay, file=x) # bound to global 'app'.
         }
         rmarkdown::render(fname, run_pandoc=FALSE) # avoid need for the bib file.
-    }, args=list(fname=fn, dir=out.dir), show=TRUE)
+    }, args=list(fname=fn), show=TRUE)
 }
