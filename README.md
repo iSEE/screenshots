@@ -15,7 +15,8 @@ To trigger screenshot construction, a "source" repository should contain Rmarkdo
 
 - Each Rmarkdown file can create Shiny app objects in an `app` variable (possibly multiple times).
 The chunk that creates `app` should be followed by a code chunk that calls the `SCREENSHOT()` function,
-supplied with the desired name of the PNG file and (optionally) the delay between loading the app and taking the screenshot.
+supplied with the desired path of the PNG file and (optionally) the delay between loading the app and taking the screenshot.
+We suggest saving to a `screenshots/` subdirectory withint `vignettes/`.
 
   ````
   ```{r}
@@ -24,19 +25,17 @@ supplied with the desired name of the PNG file and (optionally) the delay betwee
   ```
   
   ```{r}
-  SCREENSHOT(app, delay=20)
+  SCREENSHOT("screenshots/some_name_here.png", delay=20)
   ```
   ````
 
 - Each Rmarkdown file should have a silent code chunk at the top that defines the `SCREENSHOT` function if it doesn't exist.
-This will be used to insert the screenshots during Rmarkdown compilation in the source repository;
-it will be ignored when the screenshots are being compiled in the **screenshots** repository.
+This will be used to insert the PNGs during Rmarkdown compilation in the source repository;
+it will be ignored when the screenshots are being compiled by the `compile.R` script from this repository.
 
   ````
   ```{r, eval=!exists("SCREENSHOT"), include=FALSE}
-  SCREENSHOT <- function(x, ...) {
-      knitr::include_graphics(file.path("screenshots", x))
-  }
+  SCREENSHOT <- function(x, ...) knitr::include_graphics(x)
   ```
   ````
 
