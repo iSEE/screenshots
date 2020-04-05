@@ -4,7 +4,7 @@
 
 library(callr)
 src.dir <- "vignettes"
-all.assets <- list.files(src.dir, full.names=TRUE)
+all.assets <- list.files(src.dir, full.names=TRUE, pattern=".Rmd$")
 
 for (fn in all.assets) {
     r(fun=function(fname) {
