@@ -2,9 +2,15 @@
 # (typically as part of an R package structure) and execute them, taking
 # appshots along the way whenever it sees a SCREENSHOT command.
 
+args <- commandArgs(trailingOnly=TRUE)
+if (length(args)) {
+    all.assets <- args
+} else {
+    src.dir <- "vignettes"
+    all.assets <- list.files(src.dir, full.names=TRUE, pattern=".Rmd$")
+}
+
 library(callr)
-src.dir <- "vignettes"
-all.assets <- list.files(src.dir, full.names=TRUE, pattern=".Rmd$")
 
 for (fn in all.assets) {
     r(fun=function(fname) {
