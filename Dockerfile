@@ -5,7 +5,7 @@ LABEL authors="infinite.monkeys.with.keyboards@gmail.com" \
     description="Docker image for screenshot generation."
 
 # Requirements for 'compile.R'.
-RUN Rscript -e "BiocManager::install(c('rmarkdown', 'devtools'))"
+RUN Rscript -e "BiocManager::install(c('rmarkdown', 'devtools', 'callr'))"
 RUN Rscript -e "devtools::install_github('rstudio/webshot2')"
 
 # Defining the entrypoint for Git management and compilation. Note that though
