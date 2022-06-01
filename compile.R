@@ -1,6 +1,7 @@
 # This script will consider all Rmarkdown files in the 'vignettes' subdirectory
 # (typically as part of an R package structure) and execute them, taking
 # appshots along the way whenever it sees a SCREENSHOT command.
+# remotes::install_github("rstudio/webshot2")
 
 args <- commandArgs(trailingOnly=TRUE)
 if (length(args)) {
@@ -14,7 +15,7 @@ library(callr)
 
 for (fn in all.assets) {
     r(fun=function(fname) {
-        SCREENSHOT <- function(x, delay=10) {
+        SCREENSHOT <- function(x, delay=20) {
             dir.create(dirname(x), recursive=TRUE, showWarning=FALSE)
             webshot2::appshot(app, delay=delay, file=x) # bound to global 'app'.
         }
