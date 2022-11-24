@@ -16,7 +16,7 @@ for (fn in all.assets) {
     r(fun=function(fname) {
         SCREENSHOT <- function(x, delay=10) {
             dir.create(dirname(x), recursive=TRUE, showWarning=FALSE)
-            webshot2::appshot(app, delay=delay, file=x) # bound to global 'app'.
+            webshot2::appshot(app, delay=delay, file=x, vwidth = 1200, vheight = 800) # bound to global 'app'.
         }
         rmarkdown::render(fname, run_pandoc=FALSE) # avoid need for the bib file.
     }, args=list(fname=fn), show=TRUE)
